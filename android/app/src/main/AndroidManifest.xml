@@ -38,8 +38,4 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-<<<<<<< HEAD
 </manifest>
-=======
-</manifest>
->>>>>>> 5e678445de39eb826cd7c0c38ee3c5f3e983a6bb
