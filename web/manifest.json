@@ -1,6 +1,6 @@
 {
-    "name": "athleap_flutter",
-    "short_name": "athleap_flutter",
+    "name": "athleap",
+    "short_name": "athleap",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

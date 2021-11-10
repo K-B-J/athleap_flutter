@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # athleap_flutter
+=======
+# athleap
+>>>>>>> 5e678445de39eb826cd7c0c38ee3c5f3e983a6bb
 
 A new Flutter project.
 

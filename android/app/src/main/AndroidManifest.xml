@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.athleap_flutter">
-   <application
-        android:label="athleap_flutter"
+    <application
+        android:label="Athleap"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -38,4 +38,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+<<<<<<< HEAD
 </manifest>
+=======
+</manifest>
+>>>>>>> 5e678445de39eb826cd7c0c38ee3c5f3e983a6bb
