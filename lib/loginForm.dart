@@ -10,83 +10,146 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  var _email = "";
+  var _password = "";
+  var _isEmail = false;
+  var _isPassword = false;
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: Text(
             'Login',
           ),
           centerTitle: true,
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.deepOrange.shade300,
         ),
-        body: SingleChildScrollView(
-            child: Container(
-                margin: EdgeInsets.all(10),
-                child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 10.0),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: "Enter Email",
-                              fillColor: Colors.white,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
+        body: Container(
+            margin: EdgeInsets.all(10),
+            height: height,
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SingleChildScrollView(
+                      child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10.0),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: "Enter Email",
+                                    fillColor: Colors.white,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.red,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (text) {
+                                    if (text != "") {
+                                      setState(() {
+                                        _isEmail = true;
+                                        _email = text;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _isEmail = false;
+                                        _email = text;
+                                      });
+                                    }
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Email cannot be empty";
+                                    }
+                                  },
                                 ),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.red,
-                                  width: 2.0,
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 10.0),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                    hintText: "Enter password",
+                                    fillColor: Colors.white,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.red,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (text) {
+                                    if (text != "") {
+                                      setState(() {
+                                        _isPassword = true;
+                                        _password = text;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _isPassword = false;
+                                        _password = text;
+                                      });
+                                    }
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Password cannot be empty";
+                                    }
+                                  },
                                 ),
                               ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter some text";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 10.0),
-                          child: TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: "Enter password",
-                              fillColor: Colors.white,
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  color: Colors.red,
-                                  width: 2.0,
-                                ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please enter some text";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    )))));
+                            ],
+                          ))),
+                  Spacer(),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.deepOrange.shade300,
+                      onPrimary: Colors.white,
+                      shadowColor: Colors.deepOrangeAccent,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0)),
+                      minimumSize: Size(400, 60), //////// HERE
+                    ),
+                    onPressed: _isEmail && _isPassword
+                        ? () {
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Processing data ')),
+                              );
+                            }
+                          }
+                        : null,
+                    child: Text(
+                      'Sign in',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                ])));
   }
 }
