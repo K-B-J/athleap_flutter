@@ -1,3 +1,4 @@
+import 'package:athleap/registerForm.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
@@ -21,6 +22,7 @@ class _LoginFormState extends State<LoginForm> {
         appBar: AppBar(
           title: Text(
             'Login',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           backgroundColor: Colors.deepOrange.shade300,
@@ -56,8 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        color: Colors.red,
-                                        width: 2.0,
+                                        color: Colors.grey,
                                       ),
                                     ),
                                   ),
@@ -97,8 +98,7 @@ class _LoginFormState extends State<LoginForm> {
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        color: Colors.red,
-                                        width: 2.0,
+                                        color: Colors.grey,
                                       ),
                                     ),
                                   ),
@@ -122,6 +122,26 @@ class _LoginFormState extends State<LoginForm> {
                                   },
                                 ),
                               ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                      onPrimary: Colors.black,
+                                      shadowColor: Colors.grey.shade400,
+                                      elevation: 2,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      )),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RegisterForm()),
+                                    );
+                                  },
+                                  child: Text(
+                                      "Don't have an account yet? Sign up here.")),
                             ],
                           ))),
                   Spacer(),
@@ -147,7 +167,8 @@ class _LoginFormState extends State<LoginForm> {
                         : null,
                     child: Text(
                       'Sign in',
-                      style: TextStyle(fontSize: 25),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ])));
