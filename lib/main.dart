@@ -3,5 +3,7 @@ import 'package:athleap/loginForm.dart';
 
 void main() {
   runApp(MaterialApp(
-      theme: ThemeData(fontFamily: 'QuickSand'), home: LoginForm()));
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'QuickSand'),
+      home: LoginForm()));
 }
