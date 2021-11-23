@@ -1,7 +1,6 @@
 import 'package:athleap/runningForm.dart';
 import 'package:athleap/registerForm.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RunningHistory extends StatelessWidget {
   @override

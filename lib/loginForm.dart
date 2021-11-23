@@ -1,4 +1,3 @@
-import 'package:athleap/registerForm.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
@@ -10,6 +9,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  var main_color = const Color(0xfffa9b70);
   final _formKey = GlobalKey<FormState>();
   var _email = "";
   var _password = "";
@@ -21,11 +21,10 @@ class _LoginFormState extends State<LoginForm> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Login',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            'LOGIN',
           ),
           centerTitle: true,
-          backgroundColor: Colors.deepOrange.shade300,
+          backgroundColor: main_color,
         ),
         body: Container(
             margin: EdgeInsets.all(10),
@@ -58,7 +57,8 @@ class _LoginFormState extends State<LoginForm> {
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        color: Colors.grey,
+                                        color: Colors.red,
+                                        width: 2.0,
                                       ),
                                     ),
                                   ),
@@ -87,7 +87,7 @@ class _LoginFormState extends State<LoginForm> {
                                 child: TextFormField(
                                   obscureText: true,
                                   decoration: InputDecoration(
-                                    hintText: "Enter password",
+                                    hintText: "Enter Password",
                                     fillColor: Colors.white,
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -98,7 +98,8 @@ class _LoginFormState extends State<LoginForm> {
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       borderSide: BorderSide(
-                                        color: Colors.grey,
+                                        color: Colors.red,
+                                        width: 2.0,
                                       ),
                                     ),
                                   ),
@@ -122,38 +123,20 @@ class _LoginFormState extends State<LoginForm> {
                                   },
                                 ),
                               ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.white,
-                                      onPrimary: Colors.black,
-                                      shadowColor: Colors.grey.shade400,
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      )),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RegisterForm()),
-                                    );
-                                  },
-                                  child: Text(
-                                      "Don't have an account yet? Sign up here.")),
                             ],
                           ))),
-                  Spacer(),
+                  Spacer(
+                    flex: 12,
+                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.deepOrange.shade300,
+                      primary: main_color,
                       onPrimary: Colors.white,
-                      shadowColor: Colors.deepOrangeAccent,
+                      shadowColor: main_color,
                       elevation: 3,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0)),
-                      minimumSize: Size(400, 60), //////// HERE
+                      minimumSize: Size(300, 60),
                     ),
                     onPressed: _isEmail && _isPassword
                         ? () {
@@ -166,11 +149,11 @@ class _LoginFormState extends State<LoginForm> {
                           }
                         : null,
                     child: Text(
-                      'Sign in',
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      'Login',
+                      style: TextStyle(fontSize: 25),
                     ),
                   ),
+                  Spacer(),
                 ])));
   }
 }

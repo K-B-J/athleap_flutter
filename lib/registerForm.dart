@@ -12,13 +12,12 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   var _name = "";
-  double _height = 0;
-  double _weight = 0;
+  int _height = 0;
+  int _weight = 0;
   int _gender = 0;
   var _email = "";
   var _password = "";
   var _confirmPassword = "";
-  bool _isPasswordInvisible = true;
   List<bool> _isSelected = [true, false];
   @override
   Widget build(BuildContext context) {
@@ -65,11 +64,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       });
                     },
                     validator: (value) {
-                      RegExp nameRegex = RegExp(r"^[A-Za-z]+$");
                       if (value == null || value.isEmpty) {
                         return "Name cannot be empty";
-                      } else if (!nameRegex.hasMatch(value)) {
-                        return "Name can only have alphabets";
                       }
                     },
                   ),
@@ -97,22 +93,8 @@ class _RegisterFormState extends State<RegisterForm> {
                             ConstrainedBox(
                                 constraints: BoxConstraints(maxWidth: 100.0),
                                 child: TextFormField(
-                                  keyboardType: TextInputType.number,
                                   decoration:
                                       InputDecoration(hintText: "Height"),
-                                  validator: (value) {
-                                    RegExp heightRegex =
-                                        RegExp(r"^\d+(\.\d+)?$");
-                                    if (value == null || value.isEmpty) {
-                                      return "Enter height";
-                                    } else if (!heightRegex.hasMatch(value)) {
-                                      return "Invalid";
-                                    } else {
-                                      setState(() {
-                                        _height = double.parse(value);
-                                      });
-                                    }
-                                  },
                                 )),
                             Text("cms"),
                           ],
@@ -142,19 +124,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                 child: TextFormField(
                                   decoration:
                                       InputDecoration(hintText: "Weight"),
-                                  validator: (value) {
-                                    RegExp weightRegex =
-                                        RegExp(r"^\d+(\.\d+)?$");
-                                    if (value == null || value.isEmpty) {
-                                      return "Enter weight";
-                                    } else if (!weightRegex.hasMatch(value)) {
-                                      return "Invalid";
-                                    } else {
-                                      setState(() {
-                                        _weight = double.parse(value);
-                                      });
-                                    }
-                                  },
                                 )),
                             Text("kgs"),
                           ],
@@ -211,7 +180,6 @@ class _RegisterFormState extends State<RegisterForm> {
                               ],
                               onPressed: (int index) {
                                 setState(() {
-                                  _gender = _isSelected[index] ? 0 : 1;
                                   _isSelected[index] = !_isSelected[index];
                                 });
                                 if (index == 1) {
@@ -221,7 +189,6 @@ class _RegisterFormState extends State<RegisterForm> {
                                 } else {
                                   setState(() {
                                     _isSelected[1] = !_isSelected[1];
-                                    _gender = 0;
                                   });
                                 }
                               },
@@ -254,12 +221,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       });
                     },
                     validator: (value) {
-                      RegExp emailRegex = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                       if (value == null || value.isEmpty) {
                         return "Email cannot be empty";
-                      } else if (!emailRegex.hasMatch(value)) {
-                        return "Enter a valid E-mail address";
                       }
                     },
                   ),
@@ -267,18 +230,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: TextFormField(
-                    obscureText: _isPasswordInvisible,
                     decoration: InputDecoration(
                       hintText: "Password",
-                      suffixIcon: new GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isPasswordInvisible = !_isPasswordInvisible;
-                            });
-                          },
-                          child: _isPasswordInvisible
-                              ? const Icon(Icons.visibility)
-                              : const Icon(Icons.visibility_off)),
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -299,12 +252,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       });
                     },
                     validator: (value) {
-                      RegExp passwordRegex = RegExp(
-                          r"^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
                       if (value == null || value.isEmpty) {
                         return "Password cannot be empty";
-                      } else if (!passwordRegex.hasMatch(value)) {
-                        return "Password should contain\n- Atleast one upper and lower case character\n- Atleast one digit and one special character\n- Must be 8 characters long";
                       }
                     },
                   ),
@@ -312,7 +261,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: TextFormField(
-                    obscureText: _isPasswordInvisible,
                     decoration: InputDecoration(
                       hintText: "Confirm Password",
                       fillColor: Colors.white,
@@ -335,9 +283,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       });
                     },
                     validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          _password != _confirmPassword) {
+                      if (value == null || value.isEmpty) {
                         return "Passwords don't match";
                       }
                     },
@@ -362,13 +308,7 @@ class _RegisterFormState extends State<RegisterForm> {
               "Register",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Processing data ')),
-                );
-              }
-            },
+            onPressed: () {},
           )),
     );
   }
