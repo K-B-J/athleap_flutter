@@ -1,4 +1,4 @@
-import 'package:athleap/addRunningData.dart';
+import 'package:athleap/runningForm.dart';
 import 'package:athleap/registerForm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
