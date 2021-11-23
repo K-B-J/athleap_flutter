@@ -10,6 +10,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  var main_color = const Color(0xfffa9b70);
   final _formKey = GlobalKey<FormState>();
   var _name = "";
   int _height = 0;
@@ -26,7 +27,7 @@ class _RegisterFormState extends State<RegisterForm> {
       appBar: AppBar(
         title: Text("Register", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange.shade300,
+        backgroundColor: main_color,
       ),
       body: Container(
           margin: EdgeInsets.all(10.0),
@@ -148,14 +149,14 @@ class _RegisterFormState extends State<RegisterForm> {
                               ),
                             ),
                             ToggleButtons(
-                              borderColor: Colors.deepOrange.shade300,
+                              borderColor: main_color,
                               borderWidth: 3.0,
                               borderRadius: BorderRadius.circular(5.0),
                               constraints: BoxConstraints(minHeight: 25.0),
-                              color: Colors.deepOrange.shade300,
-                              fillColor: Colors.deepOrange.shade300,
+                              color: main_color,
+                              fillColor: main_color,
                               selectedColor: Colors.white,
-                              selectedBorderColor: Colors.deepOrange.shade300,
+                              selectedBorderColor: main_color,
                               children: <Widget>[
                                 Padding(
                                     padding: EdgeInsets.only(
@@ -293,16 +294,17 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ))),
       bottomNavigationBar: Container(
-          margin: EdgeInsets.all(10.0),
+          margin:
+              EdgeInsets.only(top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.deepOrange.shade300,
+              primary: main_color,
               onPrimary: Colors.white,
               shadowColor: Colors.deepOrangeAccent,
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: Size(400, 60), //////// HERE
+              minimumSize: Size(300, 60), //////// HERE
             ),
             child: Text(
               "Register",

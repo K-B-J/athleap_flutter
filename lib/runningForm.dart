@@ -10,6 +10,7 @@ class AddRunningData extends StatefulWidget {
 
 class _AddRunningDataState extends State<AddRunningData> {
   final _formKey = GlobalKey<FormState>();
+  var main_color = const Color(0xfffa9b70);
   double _distance = 0;
   double _elevation = 0;
   double _time = 0;
@@ -22,7 +23,7 @@ class _AddRunningDataState extends State<AddRunningData> {
           style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange.shade300,
+        backgroundColor: main_color,
       ),
       body: Container(
         margin: EdgeInsets.all(10.0),
@@ -172,7 +173,7 @@ class _AddRunningDataState extends State<AddRunningData> {
           margin: EdgeInsets.all(10.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.deepOrange.shade300,
+              primary: main_color,
               onPrimary: Colors.white,
               shadowColor: Colors.deepOrangeAccent,
               elevation: 3,
