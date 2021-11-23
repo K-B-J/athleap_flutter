@@ -39,7 +39,7 @@ class _IndexState extends State<Index> {
         title: Text(titles[_currentIndex],
             style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange.shade300,
+        backgroundColor: main_color,
       ),
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
