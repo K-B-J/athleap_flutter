@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+var main_color = const Color(0xfffa9b70);
+
 class AddRunningData extends StatefulWidget {
   const AddRunningData({Key? key}) : super(key: key);
   @override
@@ -10,7 +12,6 @@ class AddRunningData extends StatefulWidget {
 
 class _AddRunningDataState extends State<AddRunningData> {
   final _formKey = GlobalKey<FormState>();
-  var main_color = const Color(0xfffa9b70);
   double _distance = 0;
   double _elevation = 0;
   double _time = 0;

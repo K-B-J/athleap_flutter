@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 
 var main_color = const Color(0xfffa9b70);
 
-class RunningHistory extends StatelessWidget {
+class RunningHistory extends StatefulWidget {
+  const RunningHistory({Key? key}) : super(key: key);
+
+  @override
+  _RunningHistoryState createState() => _RunningHistoryState();
+}
+
+class _RunningHistoryState extends State<RunningHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
