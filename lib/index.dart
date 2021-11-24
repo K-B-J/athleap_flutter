@@ -1,6 +1,5 @@
 import 'package:athleap/gym.dart';
 import 'package:athleap/home.dart';
-import 'package:athleap/main.dart';
 import 'package:athleap/profile.dart';
 import 'package:athleap/running.dart';
 import 'package:athleap/yoga.dart';

@@ -13,6 +13,7 @@ class Row {
   final int dumbbell_weight;
   final int time;
   final int energy;
+
   const Row({
     required this.date,
     required this.calories,
@@ -24,6 +25,11 @@ class Row {
     required this.time,
     required this.energy,
   });
+
+  // This function will be used to creat Row object from json data received from database
+  // factory Row.fromJson(){
+  //   // Logic to create Row object from json data
+  // }
 }
 
 class GymHistory extends StatefulWidget {
@@ -34,42 +40,11 @@ class GymHistory extends StatefulWidget {
 }
 
 class _GymHistoryState extends State<GymHistory> {
-  late List<Row> rows;
-  final allRows = <Row>[
-    Row(
-        date: "23/11/2021",
-        calories: 267,
-        fcoins: 3,
-        workout: "Hammer Curl",
-        sets: 3,
-        reps: 12,
-        dumbbell_weight: 94,
-        time: 30,
-        energy: 11),
-    Row(
-        date: "23/11/2021",
-        calories: 267,
-        fcoins: 3,
-        workout: "Hammer Curl",
-        sets: 3,
-        reps: 12,
-        dumbbell_weight: 94,
-        time: 30,
-        energy: 11),
-    Row(
-        date: "23/11/2021",
-        calories: 267,
-        fcoins: 3,
-        workout: "Hammer Curl",
-        sets: 3,
-        reps: 12,
-        dumbbell_weight: 94,
-        time: 30,
-        energy: 11),
-  ];
+  List<Row> rows = [];
+  @override
   void initState() {
     super.initState();
-    this.rows = List.of(allRows);
+    fetchGymData();
   }
 
   final columns = [
@@ -93,15 +68,23 @@ class _GymHistoryState extends State<GymHistory> {
           centerTitle: true,
           backgroundColor: main_color,
         ),
-        body: Container(
-            margin: EdgeInsets.all(10.0),
-            width: double.infinity,
-            child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: buildDataTable(),
-                ))),
+        body: RefreshIndicator(
+          onRefresh: fetchGymData,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.all(10.0),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: buildDataTable(),
+                      )))
+            ],
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Align(
           alignment: Alignment(0.9, 0.94),
@@ -177,4 +160,44 @@ class _GymHistoryState extends State<GymHistory> {
             textAlign: TextAlign.center,
           ))))
       .toList();
+
+  Future<void> fetchGymData() async {
+    // Code to fetch the data
+    // Temporarily defining this list
+    List<Row> allRows = <Row>[
+      Row(
+          date: "23/11/2021",
+          calories: 267,
+          fcoins: 3,
+          workout: "Hammer Curl",
+          sets: 3,
+          reps: 12,
+          dumbbell_weight: 94,
+          time: 30,
+          energy: 11),
+      Row(
+          date: "23/11/2021",
+          calories: 267,
+          fcoins: 3,
+          workout: "Hammer Curl",
+          sets: 3,
+          reps: 12,
+          dumbbell_weight: 94,
+          time: 30,
+          energy: 11),
+      Row(
+          date: "23/11/2021",
+          calories: 267,
+          fcoins: 3,
+          workout: "Hammer Curl",
+          sets: 3,
+          reps: 12,
+          dumbbell_weight: 94,
+          time: 30,
+          energy: 11),
+    ];
+    setState(() {
+      rows = allRows;
+    });
+  }
 }
