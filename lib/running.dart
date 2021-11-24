@@ -2,11 +2,18 @@ import 'package:athleap/runningForm.dart';
 import 'package:athleap/registerForm.dart';
 import 'package:flutter/material.dart';
 
+var main_color = const Color(0xfffa9b70);
+
 class RunningHistory extends StatelessWidget {
-  var main_color = const Color(0xfffa9b70);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Running Records",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          centerTitle: true,
+          backgroundColor: main_color,
+        ),
         body: Container(
             margin: EdgeInsets.all(10.0),
             width: double.infinity,

@@ -5,5 +5,5 @@ void main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'QuickSand'),
-      home: Index()));
+      home: Index(streamController.stream)));
 }
