@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "752416064701",
+    "project_id": "athleap-b33f0",
+    "storage_bucket": "athleap-b33f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752416064701:android:be04d6522c4493edf123d4",
+        "android_client_info": {
+          "package_name": "com.example.athleap_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752416064701-0ficmm831stm53obrk7ckgs353lkcr5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9dCpBh8Ncey-Jeurbp9-goGQ_YAfPoC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752416064701-0ficmm831stm53obrk7ckgs353lkcr5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

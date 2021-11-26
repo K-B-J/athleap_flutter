@@ -1,3 +1,5 @@
+import 'package:athleap/auth.dart';
+import 'package:athleap/loading.dart';
 import 'package:flutter/material.dart';
 
 var main_color = const Color(0xfffa9b70);
@@ -10,6 +12,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +21,19 @@ class _ProfileState extends State<Profile> {
         centerTitle: true,
         backgroundColor: main_color,
       ),
+      body: loading
+          ? Loading()
+          : Center(
+              child: ElevatedButton(
+                child: Text("Log Out"),
+                onPressed: () {
+                  setState(() {
+                    loading = true;
+                  });
+                  AuthService().signOut();
+                },
+              ),
+            ),
     );
   }
 }

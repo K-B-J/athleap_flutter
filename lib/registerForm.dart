@@ -1,5 +1,10 @@
+import 'package:athleap/ageCalculator.dart';
+import 'package:athleap/auth.dart';
+import 'package:athleap/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -10,144 +15,273 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  bool loading = false;
   var main_color = const Color(0xfffa9b70);
   final _formKey = GlobalKey<FormState>();
-  var _name = "";
-  int _height = 0;
-  int _weight = 0;
-  int _gender = 0;
-  var _email = "";
-  var _password = "";
-  var _confirmPassword = "";
-  List<bool> _isSelected = [true, false];
+  dynamic _name;
+  dynamic _phone;
+  dynamic _dob;
+  String? _dobError;
+  dynamic _height;
+  dynamic _weight;
+  List<bool> _isSelected = [true, false, false];
+  dynamic _gender;
+  dynamic _email;
+  dynamic _emailError;
+  dynamic _password;
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("REGISTER", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: main_color,
       ),
-      body: Container(
-          margin: EdgeInsets.all(10.0),
-          height: height,
-          child: SingleChildScrollView(
-              child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Name",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+      body: loading
+          ? Loading()
+          : Container(
+              margin: EdgeInsets.all(20),
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                  child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: TextFormField(
+                        initialValue: _name,
+                        decoration: InputDecoration(
+                          hintText: "Name",
+                          fillColor: Colors.white,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
+                        onSaved: (value) {
+                          setState(() {
+                            _name = value != null ? value : "";
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Invalid Input!";
+                          }
+                        },
                       ),
                     ),
-                    onChanged: (text) {
-                      setState(() {
-                        _name = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Name cannot be empty";
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: Colors.grey.shade300))),
-                    child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: TextFormField(
+                        initialValue: _phone,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "Phone Number",
+                          fillColor: Colors.white,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          setState(() {
+                            _phone = value != null ? value : "";
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Invalid Input!";
+                          }
+                          RegExp phoneRegex = RegExp(r"^[0-9]{10}$");
+                          if (!phoneRegex.hasMatch(value)) {
+                            return "Enter 10 digit mobile number";
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "Date of Birth",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey.shade700,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 120.0),
+                            child: InkWell(
+                              onTap: () {
+                                showDatePicker(
+                                        builder: (context, child) {
+                                          return Theme(
+                                              data: ThemeData(
+                                                      primaryColor: main_color)
+                                                  .copyWith(
+                                                      colorScheme:
+                                                          ColorScheme.light(
+                                                primary: main_color,
+                                                onPrimary: Colors.white,
+                                                surface: main_color,
+                                              )),
+                                              child: child!);
+                                        },
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1950),
+                                        lastDate: DateTime.now())
+                                    .then((value) => {
+                                          if (value != null)
+                                            {
+                                              setState(() {
+                                                _dob = DateFormat("dd/MM/yyyy")
+                                                    .format(value);
+                                              })
+                                            }
+                                        });
+                              },
+                              child: IgnorePointer(
+                                child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    hintText:
+                                        _dob != null ? _dob : "DD/MM/YYYY",
+                                    hintStyle: TextStyle(color: Colors.black),
+                                    fillColor: Colors.white,
+                                    errorText: _dobError,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 22),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Height",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Colors.grey.shade700,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Spacer(),
                             ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: 100.0),
+                                constraints: BoxConstraints(maxWidth: 80.0),
                                 child: TextFormField(
+                                  initialValue: _height,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if ((value == null || value.isEmpty) ||
+                                        (double.parse(value) <= 0)) {
+                                      return "Invalid Input!";
+                                    }
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      _height = value != null ? value : "";
+                                    });
+                                  },
+                                  textAlign: TextAlign.center,
                                   decoration:
                                       InputDecoration(hintText: "Height"),
                                 )),
-                            Text("cms"),
+                            Text("cm"),
                           ],
-                        ))),
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: Colors.grey.shade300))),
-                    child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        )),
+                    Container(
+                        child: Padding(
+                            padding: EdgeInsets.only(bottom: 22),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Weight",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey.shade700,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Spacer(),
+                                ConstrainedBox(
+                                    constraints: BoxConstraints(maxWidth: 80.0),
+                                    child: TextFormField(
+                                      initialValue: _weight,
+                                      keyboardType: TextInputType.number,
+                                      validator: (value) {
+                                        if ((value == null || value.isEmpty) ||
+                                            (double.parse(value) <= 0)) {
+                                          return "Invalid Input!";
+                                        }
+                                      },
+                                      onSaved: (value) {
+                                        setState(() {
+                                          _weight = value != null ? value : "";
+                                        });
+                                      },
+                                      textAlign: TextAlign.center,
+                                      decoration:
+                                          InputDecoration(hintText: "Weight"),
+                                    )),
+                                Text("kg"),
+                              ],
+                            ))),
+                    Padding(
+                        padding: EdgeInsets.only(bottom: 22),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Weight",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.grey.shade700,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Spacer(),
-                            ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: 100.0),
-                                child: TextFormField(
-                                  decoration:
-                                      InputDecoration(hintText: "Weight"),
-                                )),
-                            Text("kgs"),
-                          ],
-                        ))),
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(color: Colors.grey.shade300))),
-                    child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "Gender",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: Colors.grey.shade700,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            Spacer(),
                             ToggleButtons(
                               borderColor: main_color,
                               borderWidth: 3.0,
@@ -161,157 +295,251 @@ class _RegisterFormState extends State<RegisterForm> {
                                 Padding(
                                     padding: EdgeInsets.only(
                                         top: 0.0,
-                                        right: 20.0,
+                                        right: 18.0,
                                         bottom: 0.0,
-                                        left: 20.0),
+                                        left: 18.0),
                                     child: Text("Male",
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 14,
                                         ))),
                                 Padding(
                                     padding: EdgeInsets.only(
                                         top: 0.0,
-                                        right: 20.0,
+                                        right: 18.0,
                                         bottom: 0.0,
-                                        left: 20.0),
+                                        left: 18.0),
                                     child: Text("Female",
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 14,
+                                        ))),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 0.0,
+                                        right: 18.0,
+                                        bottom: 0.0,
+                                        left: 18.0),
+                                    child: Text("Other",
+                                        style: TextStyle(
+                                          fontSize: 14,
                                         ))),
                               ],
                               onPressed: (int index) {
+                                _isSelected[0] =
+                                    _isSelected[1] = _isSelected[2] = false;
                                 setState(() {
                                   _isSelected[index] = !_isSelected[index];
                                 });
-                                if (index == 1) {
-                                  setState(() {
-                                    _isSelected[0] = !_isSelected[0];
-                                  });
-                                } else {
-                                  setState(() {
-                                    _isSelected[1] = !_isSelected[1];
-                                  });
-                                }
                               },
                               isSelected: _isSelected,
                             ),
                           ],
-                        ))),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
+                        )),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: TextFormField(
+                        initialValue: _email,
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          fillColor: Colors.white,
+                          errorText: _emailError,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
+                        onSaved: (value) {
+                          setState(() {
+                            _email = value != null ? value : "";
+                          });
+                        },
+                        validator: (value) {
+                          RegExp emailReg = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                          if ((value == null || value.isEmpty) ||
+                              (!emailReg.hasMatch(value))) {
+                            return "Invalid Input!";
+                          }
+                        },
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: TextFormField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          fillColor: Colors.white,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _password = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Invalid Input!";
+                          }
+                          if (value.length < 6) {
+                            return "Password should contain minimum 6 characters!";
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 22),
+                      child: TextFormField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          hintText: "Confirm Password",
+                          fillColor: Colors.white,
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if ((value == null || value.isEmpty) ||
+                              (value != _password)) {
+                            return "Passwords don't match!";
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: main_color,
+                          onPrimary: Colors.white,
+                          shadowColor: Colors.deepOrangeAccent,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0)),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            _dobError = null;
+                            _emailError = null;
+                            if (_dob == null) {
+                              setState(() {
+                                _dobError = "Invalid Input!";
+                              });
+                            } else {
+                              if (ageCalculator(_dob) < 18) {
+                                setState(() {
+                                  _dobError = "Not an adult!";
+                                });
+                              } else {
+                                if (_isSelected[0] == true) {
+                                  _gender = "male";
+                                } else if (_isSelected[1] == true) {
+                                  _gender = "female";
+                                } else {
+                                  _gender = "other";
+                                }
+                                setState(() {
+                                  loading = true;
+                                });
+                                AuthService()
+                                    .signUp(_email, _password)
+                                    .then((value) {
+                                  if (value == null) {
+                                    FirebaseFirestore.instance
+                                        .collection("Users")
+                                        .add({
+                                      "email": _email,
+                                      "name": _name,
+                                      "phone": _phone,
+                                      "dob": _dob,
+                                      "height": _height,
+                                      "weight": _weight,
+                                      "gender": _gender,
+                                      "fcoins": 0
+                                    });
+                                    Navigator.pop(context);
+                                  } else if (value.message ==
+                                      "The email address is already in use by another account.") {
+                                    setState(() {
+                                      loading = false;
+                                      _emailError =
+                                          "Email ID is already registered!";
+                                    });
+                                  } else {
+                                    // If something goes wrong! (This exists just so that our app doesnt crash)
+                                    print(value.message);
+                                  }
+                                });
+                              }
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            "Register",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
-                    onChanged: (text) {
-                      setState(() {
-                        _email = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email cannot be empty";
-                      }
-                    },
-                  ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      setState(() {
-                        _password = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Password cannot be empty";
-                      }
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "Confirm Password",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      setState(() {
-                        _confirmPassword = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Passwords don't match";
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ))),
-      bottomNavigationBar: Container(
-          margin:
-              EdgeInsets.only(top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: main_color,
-              onPrimary: Colors.white,
-              shadowColor: Colors.deepOrangeAccent,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0)),
-              minimumSize: Size(300, 60), //////// HERE
-            ),
-            child: Text(
-              "Register",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            onPressed: () {},
-          )),
+              ))),
     );
   }
 }

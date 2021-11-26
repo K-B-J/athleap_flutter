@@ -9,7 +9,7 @@ import 'dart:async';
 
 var main_color = const Color(0xfffa9b70);
 
-StreamController<int> streamController = StreamController<int>();
+StreamController<int> streamController = StreamController<int>.broadcast();
 
 class Index extends StatefulWidget {
   const Index(this.stream);
