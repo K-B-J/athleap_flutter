@@ -1,8 +1,8 @@
-import 'package:athleap/auth.dart';
-import 'package:athleap/database.dart';
-import 'package:athleap/gymForm.dart';
-import 'package:athleap/loading.dart';
-import 'package:athleap/sort.dart';
+import 'package:athleap/firebase/auth.dart';
+import 'package:athleap/firebase/database.dart';
+import 'package:athleap/pages/gymForm.dart';
+import 'package:athleap/helpers/loading.dart';
+import 'package:athleap/helpers/sort.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -1,7 +1,7 @@
-import 'package:athleap/ageCalculator.dart';
-import 'package:athleap/auth.dart';
-import 'package:athleap/database.dart';
-import 'package:athleap/loading.dart';
+import 'package:athleap/helpers/ageCalculator.dart';
+import 'package:athleap/firebase/auth.dart';
+import 'package:athleap/firebase/database.dart';
+import 'package:athleap/helpers/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';

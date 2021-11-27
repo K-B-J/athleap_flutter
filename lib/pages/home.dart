@@ -1,5 +1,5 @@
-import 'package:athleap/index.dart';
-import 'package:athleap/shop.dart';
+import 'package:athleap/pages/index.dart';
+import 'package:athleap/pages/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

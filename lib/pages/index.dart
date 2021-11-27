@@ -1,8 +1,8 @@
-import 'package:athleap/gym.dart';
-import 'package:athleap/home.dart';
-import 'package:athleap/profile.dart';
-import 'package:athleap/running.dart';
-import 'package:athleap/yoga.dart';
+import 'package:athleap/pages/gym.dart';
+import 'package:athleap/pages/home.dart';
+import 'package:athleap/pages/profile.dart';
+import 'package:athleap/pages/running.dart';
+import 'package:athleap/pages/yoga.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';

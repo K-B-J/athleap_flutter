@@ -1,7 +1,7 @@
-import 'package:athleap/auth.dart';
-import 'package:athleap/loginForm.dart';
+import 'package:athleap/firebase/auth.dart';
+import 'package:athleap/pages/loginForm.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:athleap/index.dart';
+import 'package:athleap/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

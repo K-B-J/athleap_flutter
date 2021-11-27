@@ -1,6 +1,6 @@
-import 'package:athleap/auth.dart';
-import 'package:athleap/loading.dart';
-import 'package:athleap/registerForm.dart';
+import 'package:athleap/firebase/auth.dart';
+import 'package:athleap/helpers/loading.dart';
+import 'package:athleap/pages/registerForm.dart';
 import 'package:flutter/material.dart';
 
 var main_color = const Color(0xfffa9b70);
