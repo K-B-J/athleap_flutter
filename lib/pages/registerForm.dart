@@ -224,7 +224,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                   },
                                   textAlign: TextAlign.center,
                                   decoration:
-                                      InputDecoration(hintText: "Height"),
+                                      InputDecoration(hintText: "Height", hintStyle: TextStyle(color: Colors.black),),
                                 )),
                             Text("cm"),
                           ],
@@ -264,7 +264,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                       },
                                       textAlign: TextAlign.center,
                                       decoration:
-                                          InputDecoration(hintText: "Weight"),
+                                          InputDecoration(hintText: "Weight", hintStyle: TextStyle(color: Colors.black),),
                                     )),
                                 Text("kg"),
                               ],
