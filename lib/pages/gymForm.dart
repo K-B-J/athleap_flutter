@@ -397,54 +397,59 @@ class _AddGymDataState extends State<AddGymData> {
                                   DatabaseService()
                                       .fetch("Gym", _email)
                                       .then((gymSnapshot) {
-                                    int _previousGymFcoins = gymSnapshot != null
-                                        ? sorter(gymSnapshot)[0]["fcoins"]
-                                        : 0;
-                                    int _fcoins = fcoinsCalculator(
-                                        _age, _calories, _previousGymFcoins);
-                                    DatabaseService().add("Gym", {
-                                      "email": _email,
-                                      "date": _date,
-                                      "calories": _calories,
-                                      "fcoins": _fcoins,
-                                      "workout": _workout,
-                                      "sets": _sets,
-                                      "reps": _reps,
-                                      "dumbbell_weight": _dumbbell_weight,
-                                      "time": _time,
-                                      "energy": _energy
-                                    }).then((value) {
-                                      if (value == null) {
-                                        int _oldFcoins = userSnapshot.docs[0]
-                                            .data()["fcoins"];
-                                        int _newFcoins = _oldFcoins + _fcoins;
-                                        DatabaseService().update("Users",
-                                            _email, userSnapshot.docs[0].id, {
-                                          "fcoins": _newFcoins
-                                        }).then((value2) => {
-                                              if (value2 == 1)
-                                                {
-                                                  Navigator.pop(context),
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AfterForm(
-                                                                  calories:
-                                                                      _calories,
-                                                                  fcoins:
-                                                                      _fcoins)))
-                                                }
-                                              else
-                                                {
-                                                  // Something went wrong
-                                                }
-                                            });
-                                      } else {
-                                        // Something went wrong
-                                        print(value);
-                                      }
-                                    });
+                                    if (gymSnapshot == null) {
+                                      // Something went wrong
+                                    } else {
+                                      int _previousGymFcoins =
+                                          gymSnapshot.docs.length != 0
+                                              ? sorter(gymSnapshot)[0]["fcoins"]
+                                              : 0;
+                                      int _fcoins = fcoinsCalculator(
+                                          _age, _calories, _previousGymFcoins);
+                                      DatabaseService().add("Gym", {
+                                        "email": _email,
+                                        "date": _date,
+                                        "calories": _calories,
+                                        "fcoins": _fcoins,
+                                        "workout": _workout,
+                                        "sets": _sets,
+                                        "reps": _reps,
+                                        "dumbbell_weight": _dumbbell_weight,
+                                        "time": _time,
+                                        "energy": _energy
+                                      }).then((value) {
+                                        if (value == null) {
+                                          int _oldFcoins = userSnapshot.docs[0]
+                                              .data()["fcoins"];
+                                          int _newFcoins = _oldFcoins + _fcoins;
+                                          DatabaseService().update("Users",
+                                              _email, userSnapshot.docs[0].id, {
+                                            "fcoins": _newFcoins
+                                          }).then((value2) => {
+                                                if (value2 == 1)
+                                                  {
+                                                    Navigator.pop(context),
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                AfterForm(
+                                                                    calories:
+                                                                        _calories,
+                                                                    fcoins:
+                                                                        _fcoins)))
+                                                  }
+                                                else
+                                                  {
+                                                    // Something went wrong
+                                                  }
+                                              });
+                                        } else {
+                                          // Something went wrong
+                                          print(value);
+                                        }
+                                      });
+                                    }
                                   });
                                 }
                               });
