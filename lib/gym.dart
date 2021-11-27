@@ -182,9 +182,11 @@ class _GymHistoryState extends State<GymHistory> {
   Future fetchGymData() async {
     await Future.delayed(const Duration(seconds: 1),
         () {}); // Added this so that the refresh indicator stays for atleast a sec
-    setState(() {
-      loading = true;
-    });
+    if (this.mounted) {
+      setState(() {
+        loading = true;
+      });
+    }
     DatabaseService().fetch("Gym", _email).then((snapshot) {
       if (snapshot == null) {
         // Either some error occured or no data found
