@@ -104,6 +104,7 @@ class _IndexState extends State<Index> {
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,
+                color: Color(0xaa707070),
                 size: 28,
               ),
               title: Text('Profile')),

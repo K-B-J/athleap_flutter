@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:scratcher/scratcher.dart';
 
 var main_color = const Color(0xfffa9b70);
 
-class AfterForm extends StatelessWidget {
-  const AfterForm({Key? key, required this.calories, this.fcoins})
-      : super(key: key);
+class AfterForm extends StatefulWidget {
   final calories;
   final fcoins;
+  AfterForm({Key? key, required this.calories, this.fcoins}) : super(key: key);
+
+  @override
+  _AfterFormState createState() => _AfterFormState();
+}
+
+class _AfterFormState extends State<AfterForm> {
+  double _opacity = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +26,86 @@ class AfterForm extends StatelessWidget {
         centerTitle: true,
         backgroundColor: main_color,
       ),
-      body: Row(
-        children: <Widget>[
-          Text("Calories: $calories"),
-          Text(", Fcoins: $fcoins")
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.all(20),
+              child: Text(
+                "Scratch to get your Result!",
+                style: TextStyle(
+                  // color: Color(0xfffa9b70)
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Scratcher(
+              accuracy: ScratchAccuracy.low,
+              threshold: 70,
+              brushSize: 50,
+              onThreshold: () {
+                setState(() {
+                  _opacity = 1;
+                });
+              },
+              child: AnimatedOpacity(
+                duration: Duration(milliseconds: 250),
+                opacity: _opacity,
+                child: Container(
+                  height: 300,
+                  width: 300,
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Congratulations!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35,
+                          color: Color(0xfffa9b70),
+                        ),
+                      ),
+                      Text(
+                        "Calories Burnt:",
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Color(0xfffa9b70),
+                        ),
+                      ),
+                      Text(
+                        "${widget.calories}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                          color: Color(0xfffa9b70),
+                        ),
+                      ),
+                      Text(
+                        "FCoins Earned:",
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Color(0xfffa9b70),
+                        ),
+                      ),
+                      Text(
+                        "${widget.fcoins}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                          color: Color(0xfffa9b70),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
