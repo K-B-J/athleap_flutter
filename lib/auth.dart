@@ -7,7 +7,8 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-  // Sign in
+  String userEmail() => _auth.currentUser?.email as String;
+
   Future signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -17,7 +18,6 @@ class AuthService {
     }
   }
 
-  // Register
   Future signUp(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -28,7 +28,6 @@ class AuthService {
     }
   }
 
-  // Sign out
   Future signOut() async {
     try {
       await _auth.signOut();

@@ -1,10 +1,10 @@
 import 'package:athleap/ageCalculator.dart';
 import 'package:athleap/auth.dart';
+import 'package:athleap/database.dart';
 import 'package:athleap/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -498,9 +498,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     .signUp(_email, _password)
                                     .then((value) {
                                   if (value == null) {
-                                    FirebaseFirestore.instance
-                                        .collection("Users")
-                                        .add({
+                                    DatabaseService().add("Users", {
                                       "email": _email,
                                       "name": _name,
                                       "phone": _phone,
@@ -509,8 +507,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                       "weight": _weight,
                                       "gender": _gender,
                                       "fcoins": 0
+                                    }).then((result) {
+                                      if (result == null) {
+                                        Navigator.pop(context);
+                                      } else {
+                                        // Something went wrong!
+                                        print(result);
+                                      }
                                     });
-                                    Navigator.pop(context);
                                   } else if (value.message ==
                                       "The email address is already in use by another account.") {
                                     setState(() {
@@ -519,8 +523,8 @@ class _RegisterFormState extends State<RegisterForm> {
                                           "Email ID is already registered!";
                                     });
                                   } else {
-                                    // If something goes wrong! (This exists just so that our app doesnt crash)
-                                    print(value.message);
+                                    // Something went wrong!
+                                    print(value);
                                   }
                                 });
                               }

@@ -22,7 +22,6 @@ class _LoginFormState extends State<LoginForm> {
   dynamic _passwordError;
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -189,13 +188,12 @@ class _LoginFormState extends State<LoginForm> {
                                                 }
                                               else
                                                 {
-                                                  // If something goes wrong! (This exists just so that our app doesnt crash)
-                                                  print(value.message)
+                                                  // Something went wrong!
+                                                  print(value)
                                                 }
                                             });
                                   }
                                 },
-                                // There is no user record corresponding to this identifier. The user may have been deleted.
                                 child: Padding(
                                   padding: const EdgeInsets.all(12),
                                   child: Text(
