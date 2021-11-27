@@ -180,8 +180,8 @@ class _GymHistoryState extends State<GymHistory> {
       .toList();
 
   Future fetchGymData() async {
-    await Future.delayed(const Duration(seconds: 1),
-        () {}); // Added this so that the refresh indicator stays for atleast a sec
+    await Future.delayed(const Duration(milliseconds: 80),
+        () {}); // Added this so that the refresh indicator stays
     if (this.mounted) {
       setState(() {
         loading = true;
