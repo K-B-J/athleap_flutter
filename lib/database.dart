@@ -25,20 +25,6 @@ class DatabaseService {
     }
   }
 
-  Future fetchListen(String collection, String email) async {
-    try {
-      dynamic snapshotStream = await _firestoreInstance
-          .collection(collection)
-          .where("email", isEqualTo: email)
-          .orderBy("date", descending: true)
-          .snapshots();
-      return snapshotStream;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
   Future update(
       String collection, String email, dynamic doc, dynamic data) async {
     try {
