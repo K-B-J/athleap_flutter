@@ -1,10 +1,6 @@
-import 'dart:math';
-import 'package:athleap/pages/afterForm.dart';
-import 'package:athleap/helpers/ageCalculator.dart';
 import 'package:athleap/firebase/database.dart';
 import 'package:athleap/helpers/loading.dart';
 import 'package:athleap/firebase/auth.dart';
-import 'package:athleap/helpers/sort.dart';
 import 'package:flutter/material.dart';
 
 var main_color = const Color(0xfffa9b70);

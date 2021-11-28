@@ -40,66 +40,76 @@ class _AfterFormState extends State<AfterForm> {
                 ),
               ),
             ),
-            Scratcher(
-              accuracy: ScratchAccuracy.low,
-              threshold: 70,
-              brushSize: 50,
-              onThreshold: () {
-                setState(() {
-                  _opacity = 1;
-                });
-              },
-              child: AnimatedOpacity(
-                duration: Duration(milliseconds: 250),
-                opacity: _opacity,
-                child: Container(
-                  height: 300,
-                  width: 300,
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        "Congratulations!",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 35,
-                          color: Color(0xfffa9b70),
-                        ),
+            Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Scratcher(
+                  accuracy: ScratchAccuracy.low,
+                  threshold: 70,
+                  brushSize: 50,
+                  onThreshold: () {
+                    setState(() {
+                      _opacity = 1;
+                    });
+                  },
+                  child: AnimatedOpacity(
+                    duration: Duration(milliseconds: 250),
+                    opacity: _opacity,
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "Congratulations!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35,
+                              color: Color(0xfffa9b70),
+                            ),
+                          ),
+                          Text(
+                            "Calories Burnt:",
+                            style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Color(0xfffa9b70),
+                            ),
+                          ),
+                          Text(
+                            "${widget.calories}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                              color: Color(0xfffa9b70),
+                            ),
+                          ),
+                          Text(
+                            "FCoins Earned:",
+                            style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: Color(0xfffa9b70),
+                            ),
+                          ),
+                          Text(
+                            "${widget.fcoins}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 50,
+                              color: Color(0xfffa9b70),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Calories Burnt:",
-                        style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Color(0xfffa9b70),
-                        ),
-                      ),
-                      Text(
-                        "${widget.calories}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 50,
-                          color: Color(0xfffa9b70),
-                        ),
-                      ),
-                      Text(
-                        "FCoins Earned:",
-                        style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Color(0xfffa9b70),
-                        ),
-                      ),
-                      Text(
-                        "${widget.fcoins}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 50,
-                          color: Color(0xfffa9b70),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

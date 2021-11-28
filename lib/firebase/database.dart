@@ -35,4 +35,16 @@ class DatabaseService {
       return null;
     }
   }
+
+  Future fetchAll(String collection) async {
+    try {
+      dynamic snapshot = await _firestoreInstance
+          .collection(collection)
+          .get();
+      return snapshot;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
