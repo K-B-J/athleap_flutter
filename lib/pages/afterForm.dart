@@ -50,7 +50,7 @@ class _AfterFormState extends State<AfterForm> {
                 padding: const EdgeInsets.all(15.0),
                 child: Scratcher(
                   accuracy: ScratchAccuracy.low,
-                  threshold: 70,
+                  threshold: 0,
                   brushSize: 50,
                   onThreshold: () {
                     setState(() {
