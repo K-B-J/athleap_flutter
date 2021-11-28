@@ -49,7 +49,7 @@ class _IndexState extends State<Index> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
-        selectedItemColor: main_color,
+        selectedItemColor: Color(0xaafa9b70),
         selectedFontSize: 10,
         unselectedFontSize: 10,
         items: [
@@ -102,11 +102,17 @@ class _IndexState extends State<Index> {
                     ),
               title: Text('Gym')),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle,
-                color: Color(0xaa707070),
-                size: 28,
-              ),
+              icon: _currentIndex == 4
+                  ? Icon(
+                      Icons.account_circle,
+                      color: Color(0xaafa9b70),
+                      size: 28,
+                    )
+                  : Icon(
+                      Icons.account_circle,
+                      color: Color(0xaa707070),
+                      size: 28,
+                    ),
               title: Text('Profile')),
         ],
         onTap: (index) {
