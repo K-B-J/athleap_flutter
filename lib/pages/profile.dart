@@ -316,7 +316,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -324,7 +324,7 @@ class _ProfileState extends State<Profile> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xaa707070),
+                              primary: Color(0xff707070),
                               onPrimary: Colors.white,
                               elevation: 3,
                               shape: RoundedRectangleBorder(
