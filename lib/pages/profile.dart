@@ -1,10 +1,8 @@
-import 'package:athleap/helpers/ageCalculator.dart';
 import 'package:athleap/firebase/database.dart';
 import 'package:athleap/helpers/loading.dart';
 import 'package:athleap/firebase/auth.dart';
 import 'package:flutter/material.dart';
-import "./profileElement.dart";
-import 'package:intl/intl.dart';
+import '../helpers/profileElement.dart';
 
 var main_color = const Color(0xfffa9b70);
 
@@ -17,25 +15,21 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  bool loading = false;
+  bool loading = true;
   final _email = AuthService().userEmail();
-  String _name = "";
-  String _gender = "";
-  String _dob = "";
-  var _fcoins;
-  var _weight;
-  var _height;
-  double _textFontSize = 20;
+  dynamic _name;
+  dynamic _gender;
+  dynamic _dob;
+  dynamic _fcoins;
+  dynamic _weight;
+  dynamic _height;
+  dynamic _phone;
   void initState() {
     super.initState();
     fetchUserData();
   }
 
-  String? _dobError;
   final _formKey = GlobalKey<FormState>();
-  List<bool> _isSelected = [true, false, false];
-  dynamic _password;
-  dynamic _phone;
 
   @override
   Widget build(BuildContext context) {
@@ -56,110 +50,110 @@ class _ProfileState extends State<Profile> {
       ),
       body: loading
           ? Loading()
-          : Container(
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Text(
-                    "Hello, $_name",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Spacer(),
-                  // Divider for Gender
-                  Divider(
-                    color: Color(0xff707070),
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  ProfileElement("Gender", _gender.toUpperCase()),
-                  // Divider for Date of Birth
-                  Divider(
-                    color: Color(0xff707070),
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  ProfileElement("DOB", _dob),
-                  // Divider for height
-                  Divider(
-                    color: Color(0xff707070),
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  ProfileElement("Height", "$_height cm"),
-                  // divider for weight
-                  Divider(
-                    color: Color(0xff707070),
-                    indent: 20, // empty space to the leading edge of divider.
-                    endIndent: 20,
-                  ),
-                  ProfileElement("Weight", "$_weight kg"),
-                  Divider(
-                    color: Color(0xff707070),
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  Spacer(),
-                  // edit button
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedButton(
-                      child: Text(
-                        "Edit Details",
+          : Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Hello, $_name",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      onPressed: () {
-                        _key.currentState!.openDrawer();
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Color(0xaa707070),
-                        ),
-                        textStyle: MaterialStateProperty.all(
-                          TextStyle(fontSize: 20),
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Phone Number", _phone),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Date of Birth", _dob),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Gender", _gender.toUpperCase()),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Height", "$_height cm"),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Weight", "$_weight kg"),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      ProfileElement("Fcoins", "$_fcoins"),
+                      Divider(
+                        color: Color(0xff707070),
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xff707070),
+                            onPrimary: Colors.white,
+                            shadowColor: Color(0xaa707070),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0)),
+                          ),
+                          onPressed: () {
+                            _key.currentState!.openDrawer();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              "Edit Details",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedButton(
-                      child: Text(
-                        "Log Out",
+                      SizedBox(
+                        height: 14,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          loading = true;
-                        });
-                        AuthService().signOut();
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Color(0xfffa9b70),
-                        ),
-                        textStyle: MaterialStateProperty.all(
-                          TextStyle(fontSize: 20),
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: main_color,
+                            onPrimary: Colors.white,
+                            shadowColor: Colors.deepOrangeAccent,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0)),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              loading = true;
+                            });
+                            AuthService().signOut();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              "LogOut",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
       drawer: Drawer(
@@ -167,122 +161,19 @@ class _ProfileState extends State<Profile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Edit Details:-",
+              "Edit Details",
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
             Container(
                 margin: EdgeInsets.all(20),
-                // height: MediaQuery.of(context).size.height,
                 child: Form(
                   key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 22),
-                        child: TextFormField(
-                          initialValue: _name,
-                          decoration: InputDecoration(
-                            hintText: "Name",
-                            fillColor: Colors.white,
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.red,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.blue,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          onSaved: (value) {
-                            setState(() {
-                              _name = value != null ? value : "";
-                            });
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Invalid Input!";
-                            }
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 22),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              "Date of Birth",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey.shade700,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Spacer(),
-                            ConstrainedBox(
-                              constraints: BoxConstraints(maxWidth: 120.0),
-                              child: InkWell(
-                                onTap: () {
-                                  showDatePicker(
-                                          builder: (context, child) {
-                                            return Theme(
-                                                data: ThemeData(
-                                                        primaryColor:
-                                                            main_color)
-                                                    .copyWith(
-                                                        colorScheme:
-                                                            ColorScheme.light(
-                                                  primary: main_color,
-                                                  onPrimary: Colors.white,
-                                                  surface: main_color,
-                                                )),
-                                                child: child!);
-                                          },
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime.now())
-                                      .then((value) => {
-                                            if (value != null)
-                                              {
-                                                // setState(() {
-                                                //   _dob =
-                                                //       DateFormat("dd/MM/yyyy")
-                                                //           .format(value);
-                                                // })
-                                              }
-                                          });
-                                },
-                                child: IgnorePointer(
-                                  child: TextFormField(
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      hintText:
-                                          _dob != null ? _dob : "DD/MM/YYYY",
-                                      hintStyle: TextStyle(color: Colors.black),
-                                      fillColor: Colors.white,
-                                      errorText: _dobError,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
                       Padding(
                           padding: EdgeInsets.only(bottom: 22),
                           child: Row(
@@ -369,6 +260,9 @@ class _ProfileState extends State<Profile> {
                                 ],
                               ))),
                       SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -382,56 +276,44 @@ class _ProfileState extends State<Profile> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-                              _dobError = null;
-                              if (_dob == null) {
-                                setState(() {
-                                  _dobError = "Invalid Input!";
-                                });
-                              } else {
-                                if (ageCalculator(_dob) < 18) {
-                                  setState(() {
-                                    _dobError = "Not an adult!";
-                                  });
+                              setState(() {
+                                loading = true;
+                              });
+                              print("$_dob,$_name,$_height,$_weight");
+                              DatabaseService()
+                                  .fetch("Users", _email)
+                                  .then((userSnapshot) {
+                                if (userSnapshot == null) {
+                                  // Something went wrong
                                 } else {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  print("$_dob,$_name,$_height,$_weight");
-                                  DatabaseService()
-                                      .fetch("Users", _email)
-                                      .then((userSnapshot) {
-                                    if (userSnapshot == null) {
-                                      // Something went wrong
-                                    } else {
-                                      DatabaseService().update("Users", _email,
-                                          userSnapshot.docs[0].id, {
-                                        "name": _name,
-                                        "dob": _dob,
-                                        "height": _height,
-                                        "weight": _weight,
-                                      }).then((value) {
-                                        if (value != null) {
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            fetchUserData();
-                                          });
-                                        }
+                                  DatabaseService().update("Users", _email,
+                                      userSnapshot.docs[0].id, {
+                                    "height": _height,
+                                    "weight": _weight,
+                                  }).then((value) {
+                                    if (value != null) {
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        fetchUserData();
                                       });
                                     }
                                   });
                                 }
-                              }
+                              });
                             }
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(12),
                             child: Text(
-                              "Edit",
+                              "Save",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: 12,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -470,28 +352,18 @@ class _ProfileState extends State<Profile> {
   }
 
   Future fetchUserData() async {
-    await Future.delayed(const Duration(milliseconds: 80),
-        () {}); // Added this so that the refresh indicator stays
-    if (this.mounted) {
-      setState(() {
-        loading = true;
-      });
-    }
     DatabaseService().fetch("Users", _email).then((snapshot) {
       if (snapshot == null) {
-        // Either some error occured or no data found
-        setState(() {
-          loading = false;
-        });
+        // Something went wrong
       } else {
         setState(() {
           _name = snapshot.docs[0].data()["name"];
           _gender = snapshot.docs[0].data()["gender"];
-          print("hellllllllo $_dob");
           _dob = snapshot.docs[0].data()["dob"];
           _fcoins = snapshot.docs[0].data()["fcoins"];
           _weight = snapshot.docs[0].data()["weight"];
           _height = snapshot.docs[0].data()["height"];
+          _phone = snapshot.docs[0].data()["phone"];
           loading = false;
         });
       }
