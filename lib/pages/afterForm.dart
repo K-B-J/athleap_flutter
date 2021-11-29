@@ -33,9 +33,8 @@ class _AfterFormState extends State<AfterForm> {
             Container(
               margin: EdgeInsets.all(20),
               child: Text(
-                "Scratch to get your Result!",
+                "Scratch to reveal your Result!",
                 style: TextStyle(
-                  // color: Color(0xfffa9b70)
                   fontSize: 20,
                 ),
               ),
@@ -61,8 +60,8 @@ class _AfterFormState extends State<AfterForm> {
                     duration: Duration(milliseconds: 250),
                     opacity: _opacity,
                     child: Container(
-                      height: 300,
-                      width: 300,
+                      height: 320,
+                      width: 320,
                       alignment: Alignment.center,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
