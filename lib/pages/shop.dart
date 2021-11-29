@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:athleap/pages/afterForm.dart';
-import 'package:athleap/helpers/ageCalculator.dart';
 import 'package:athleap/firebase/database.dart';
 import 'package:athleap/helpers/loading.dart';
 import 'package:athleap/firebase/auth.dart';
-import 'package:athleap/helpers/sort.dart';
-import 'package:flutter/material.dart';
 
 var main_color = const Color(0xfffa9b70);
 
@@ -18,22 +13,14 @@ class Shop extends StatefulWidget {
 }
 
 class _ShopState extends State<Shop> {
-  bool loading = false;
+  bool loading = true;
   final _email = AuthService().userEmail();
   List _items = [];
-  int _userFcoins = 0;
+  dynamic _userFcoins;
 
   void initState() {
     super.initState();
-    fetchShopData();
-    fetchUserData();
-  }
-
-  void _buy(int price) {
-    setState(() {
-      _userFcoins = _userFcoins - (price);
-      print("Item added to cart");
-    });
+    fetchData();
   }
 
   @override
@@ -55,6 +42,20 @@ class _ShopState extends State<Shop> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        height: 32,
+                      ),
+                      Text(
+                        "Your Fcoins: $_userFcoins",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       ..._items.map((item) {
                         return Container(
                           width: 300,
@@ -94,7 +95,7 @@ class _ShopState extends State<Shop> {
                                           return Card(
                                             elevation: 10,
                                             child: Container(
-                                              width: 25,
+                                              width: 32,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(5),
@@ -113,31 +114,38 @@ class _ShopState extends State<Shop> {
                                     "${item.data()["price"]} FC",
                                     style: TextStyle(
                                       fontSize: 30,
-                                      color: Color(0xfffa9b70),
                                     ),
                                   ),
                                   ElevatedButton(
                                     child: Text("+ Add to Cart"),
-                                    onPressed:
-                                        (_userFcoins >= item.data()["price"])
-                                            ? () {
-                                                _buy(int.parse(
-                                                    item.data()["price"]));
-                                              }
-                                            : null,
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        Color(0xfffa9b70),
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                        ),
-                                      ),
-                                    ),
+                                    onPressed: () {},
+                                    style: (_userFcoins >= item.data()["price"])
+                                        ? ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                              Color(0xfffa9b70),
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ),
+                                            ),
+                                          )
+                                        : ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                              Color(0xff707070),
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ),
+                                            ),
+                                          ),
                                   )
                                 ],
                               ),
@@ -145,53 +153,30 @@ class _ShopState extends State<Shop> {
                           ),
                         );
                       }),
+                      SizedBox(
+                        height: 20,
+                      ),
                     ]),
               ),
             ),
     );
   }
 
-  Future fetchShopData() async {
-    await Future.delayed(const Duration(milliseconds: 80),
-        () {}); // Added this so that the refresh indicator stays
-    if (this.mounted) {
-      setState(() {
-        loading = true;
-      });
-    }
-    DatabaseService().fetchAll("Shop").then((snapshot) {
-      if (snapshot == null) {
-        // Either some error occured or no data found
-        setState(() {
-          loading = false;
-        });
+  Future fetchData() async {
+    DatabaseService().fetch("Users", _email).then((userSnapshot) {
+      if (userSnapshot == null) {
+        //Something went wrong
       } else {
-        setState(() {
-          _items.addAll(snapshot.docs);
-          loading = false;
-        });
-      }
-    });
-  }
-
-  Future fetchUserData() async {
-    await Future.delayed(const Duration(milliseconds: 80),
-        () {}); // Added this so that the refresh indicator stays
-    if (this.mounted) {
-      setState(() {
-        loading = true;
-      });
-    }
-    DatabaseService().fetch("Users", _email).then((snapshot) {
-      if (snapshot == null) {
-        // Either some error occured or no data found
-        setState(() {
-          loading = false;
-        });
-      } else {
-        setState(() {
-          _userFcoins = int.parse(snapshot.docs[0].data()["fcoins"]);
-          loading = false;
+        DatabaseService().fetchAll("Shop").then((snapshot) {
+          if (snapshot == null) {
+            // Something went wrong
+          } else {
+            setState(() {
+              _userFcoins = userSnapshot.docs[0].data()["fcoins"];
+              _items.addAll(snapshot.docs);
+              loading = false;
+            });
+          }
         });
       }
     });
