@@ -30,7 +30,7 @@ class _AddRunningDataState extends State<AddRunningData> {
       appBar: AppBar(
         title: Text(
           "Today's Workout",
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: main_color,
@@ -38,7 +38,7 @@ class _AddRunningDataState extends State<AddRunningData> {
       body: loading
           ? Loading()
           : Container(
-              margin: EdgeInsets.all(10.0),
+              margin: EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Form(
                   key: _formKey,
@@ -48,20 +48,26 @@ class _AddRunningDataState extends State<AddRunningData> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(bottom: 8),
                           child: Text("Total distance of the run",
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ))),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
+                        padding: EdgeInsets.only(bottom: 22),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: "Total distance of the run",
+                            hintText: "Enter distance",
                             fillColor: Colors.white,
                             suffixText: "kilometers",
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
@@ -75,36 +81,40 @@ class _AddRunningDataState extends State<AddRunningData> {
                               ),
                             ),
                           ),
-                          onChanged: (text) {},
+                          onSaved: (value) {
+                            _distance = value != null ? value : "";
+                          },
                           validator: (value) {
-                            RegExp distanceRegex = RegExp(r"^\d+(\.\d+)?$");
-                            if (value == null || value.isEmpty) {
-                              return "Enter distance";
-                            } else if (!distanceRegex.hasMatch(value)) {
-                              return "Invalid";
-                            } else {
-                              setState(() {
-                                _distance = value != null ? value : "";
-                              });
+                            RegExp distanceRegex = RegExp(r"^[0-9]*$");
+                            if (value == null ||
+                                value.isEmpty ||
+                                !distanceRegex.hasMatch(value)) {
+                              return "Invalid Input!";
                             }
                           },
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(bottom: 8),
                           child: Text("Total elevation of the run",
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ))),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
+                        padding: EdgeInsets.only(bottom: 22),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: "Total elevation of the run",
+                            hintText: "Enter elevation",
                             fillColor: Colors.white,
                             suffixText: "meters",
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
@@ -118,36 +128,40 @@ class _AddRunningDataState extends State<AddRunningData> {
                               ),
                             ),
                           ),
-                          onChanged: (text) {},
+                          onSaved: (value) {
+                            _elevation = value != null ? value : "";
+                          },
                           validator: (value) {
-                            RegExp elevationRegex = RegExp(r"^\d+(\.\d+)?$");
-                            if (value == null || value.isEmpty) {
-                              return "Enter elevation";
-                            } else if (!elevationRegex.hasMatch(value)) {
-                              return "Invalid";
-                            } else {
-                              setState(() {
-                                _elevation = value != null ? value : "";
-                              });
+                            RegExp elevationRegex = RegExp(r"^[0-9]*$");
+                            if (value == null ||
+                                value.isEmpty ||
+                                !elevationRegex.hasMatch(value)) {
+                              return "Invalid Input!";
                             }
                           },
                         ),
                       ),
                       Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.only(bottom: 8),
                           child: Text("Total time of the run",
                               style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ))),
                       Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
+                        padding: EdgeInsets.only(bottom: 22),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             suffixText: "minutes",
-                            hintText: "Total time of the run",
+                            hintText: "Enter time",
                             fillColor: Colors.white,
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.red,
+                              ),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
@@ -161,17 +175,15 @@ class _AddRunningDataState extends State<AddRunningData> {
                               ),
                             ),
                           ),
-                          onChanged: (text) {},
+                          onSaved: (value) {
+                            _time = value != null ? value : "";
+                          },
                           validator: (value) {
-                            RegExp timeRegex = RegExp(r"^\d+(\.\d+)?$");
-                            if (value == null || value.isEmpty) {
-                              return "Enter time";
-                            } else if (!timeRegex.hasMatch(value)) {
-                              return "Invalid";
-                            } else {
-                              setState(() {
-                                _time = value != null ? value : "";
-                              });
+                            RegExp timeRegex = RegExp(r"^[0-9]*$");
+                            if (value == null ||
+                                value.isEmpty ||
+                                !timeRegex.hasMatch(value)) {
+                              return "Invalid Input!";
                             }
                           },
                         ),
