@@ -21,13 +21,13 @@ OR
 2. Run the following command in the root of the project to install the dependencies
 
 ```sh
-$ flutter pub get
+flutter pub get
 ```
 
 3. Run your android emulator or connect your physical device (after enabling developer options and USB debugging) and run the following command in the root of the project
 
 ```sh
-$ flutter run
+flutter run
 ```
 
 ## Images
